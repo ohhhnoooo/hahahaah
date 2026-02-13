@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Baby ❤️</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 320px;
+            position: relative;
+            z-index: 10;
+        }
+        .emoji-display {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        h1 { color: #555; font-size: 1.3rem; margin-bottom: 30px; line-height: 1.4; min-height: 4rem; }
+        .btn-container { display: flex; justify-content: center; height: 50px; gap: 20px; position: relative; }
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #ff85a2;
+            color: white;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .btn:hover { background-color: #ff5c81; transform: scale(1.05); }
+        #noBtn { position: absolute; z-index: 999; display: none; }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            color: #ff85a2;
+            font-size: 20px;
+            animation: float 3s linear infinite;
+            opacity: 0;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div id="emoji" class="emoji-display">👋</div>
+    <h1 id="text">Hi Idol!</h1>
+    
+    <div class="btn-container">
+        <button id="mainBtn" class="btn" onclick="nextStep()">TAP ME</button>
+        <button id="noBtn" class="btn" onmouseover="moveNo()">NO</button>
+    </div>
+    <form id="confessionForm" action="submit.php" method="POST" style="display:none; margin-top:16px; text-align:center;">
+        <textarea name="message" id="messageField" placeholder="Write your confession..." required style="width:100%; min-height:80px; border-radius:8px; padding:10px; border:1px solid #eee; box-sizing:border-box;"></textarea>
+        <br>
+        <button type="submit" class="btn" style="margin-top:10px;">Next</button>
+    </form>
+</div>
+
+<script>
+    let step = 0;
+    const emojiElement = document.getElementById('emoji');
+    const textElement = document.getElementById('text');
+    const mainBtn = document.getElementById('mainBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    const steps = [
+        { text: "SOOOOOOOOOOOO... <br> .....", emoji: "🤫", btn: "SO WHAT!" },
+        { text: "Valentines is so so so so so malapit na right?!", emoji: "🗓️", btn: "Kaya nga eh" },
+        { text: "Gusto mo ba humabol idol?", emoji: "😏", btn: "Paano?" },
+        { text: "Will you be my valentine?", emoji: "💍", btn: "YES!" }
+    ];
+
+    function nextStep() {
+        if (step < steps.length) {
+            textElement.innerHTML = steps[step].text;
+            emojiElement.innerHTML = steps[step].emoji;
+            mainBtn.innerHTML = steps[step].btn;
+            
+            if (step === 3) {
+                noBtn.style.display = 'block';
+                noBtn.style.position = 'relative';
+            } else {
+                noBtn.style.display = 'none';
+            }
+            step++;
+        } else {
+            textElement.innerHTML = "YEHEY! <br> See you idol! ❤️";
+            emojiElement.innerHTML = "🥳";
+            mainBtn.style.display = 'none';
+            noBtn.style.display = 'none';
+            // Reveal confession form and prefill message using the final prompt
+            const form = document.getElementById('confessionForm');
+            const msg = document.getElementById('messageField');
+            msg.value = textElement.textContent.replace(/\u00A0/g, ' ') + '\n\n' + '❤️';
+            form.style.display = 'block';
+            startHearts();
+        }
+    }
+
+    function moveNo() {
+        textElement.innerHTML = "PLEASE??? 🥺<br>Sige na idol!";
+        emojiElement.innerHTML = "🥺";
+        
+        noBtn.style.position = 'fixed';
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50);
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+    }
+
+    function startHearts() {
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }, 300);
+    }
+</script>
+
+</body>
+</html>
