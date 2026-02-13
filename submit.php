@@ -7,10 +7,9 @@ if(isset($_POST['message'])) {
     $sql = "INSERT INTO confessions (message) VALUES ('$message')";
 
     if(mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Sent to Idol successfully! ❤️');
-                window.location.href='flower.html';
-              </script>";
+        // Use server-side redirect to avoid client-side JS navigation issues
+        header('Location: flower_page.php');
+        exit;
     } else {
         echo "Error: " . mysqli_error($conn);
     }
